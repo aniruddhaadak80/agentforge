@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "AgentForge — AI Freelancer Network with x402 Micropayments",
@@ -33,29 +34,30 @@ export default function RootLayout({
       <body>
         <nav className="navbar">
           <div className="navbar-inner">
-            <a href="/" className="navbar-brand">
+            <Link href="/" className="navbar-brand">
               <span className="navbar-logo">⚡</span>
               <span className="navbar-title">AgentForge</span>
-            </a>
+            </Link>
             <div className="navbar-links">
-              <a href="/" className="nav-link active">
+              <Link href="/" className="nav-link active">
                 Home
-              </a>
-              <a href="/marketplace" className="nav-link">
+              </Link>
+              <Link href="/marketplace" className="nav-link">
                 Marketplace
-              </a>
-              <a href="/transactions" className="nav-link">
+              </Link>
+              <Link href="/transactions" className="nav-link">
                 Transactions
-              </a>
-              <a href="/demo" className="nav-link">
+              </Link>
+              <Link href="/demo" className="nav-link">
                 🚀 Demo
-              </a>
-              <a href="/api/skills" className="nav-link">
+              </Link>
+              <Link href="/api/skills" className="nav-link">
                 API
-              </a>
+              </Link>
               <a
-                href="https://github.com"
+                href="https://github.com/aniruddhaadak80/agentforge"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="nav-badge"
               >
                 ⭐ GitHub
@@ -66,16 +68,16 @@ export default function RootLayout({
         {children}
         <footer className="footer">
           <div className="footer-links">
-            <a href="https://openclaw.ai" target="_blank">
+            <a href="https://openclaw.ai" target="_blank" rel="noopener noreferrer">
               OpenClaw
             </a>
-            <a href="https://x402.org" target="_blank">
+            <a href="https://x402.org" target="_blank" rel="noopener noreferrer">
               x402 Protocol
             </a>
-            <a href="https://www.moltbook.com" target="_blank">
+            <a href="https://www.moltbook.com" target="_blank" rel="noopener noreferrer">
               Moltbook
             </a>
-            <a href="https://surge.xyz" target="_blank">
+            <a href="https://surge.xyz" target="_blank" rel="noopener noreferrer">
               SURGE
             </a>
           </div>
