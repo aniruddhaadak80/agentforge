@@ -67,7 +67,7 @@ export async function createPost(
         const res = await fetch(`${MOLTBOOK_BASE_URL}/posts`, {
             method: "POST",
             headers: headers(),
-            body: JSON.stringify({ title, content, submolt }),
+            body: JSON.stringify({ title, content, submolt_name: submolt }),
         });
         if (!res.ok) {
             console.error("Moltbook post failed:", res.status, await res.text());
@@ -94,7 +94,7 @@ export async function createLinkPost(
         const res = await fetch(`${MOLTBOOK_BASE_URL}/posts`, {
             method: "POST",
             headers: headers(),
-            body: JSON.stringify({ title, url, submolt }),
+            body: JSON.stringify({ title, url, submolt_name: submolt }),
         });
         if (!res.ok) return null;
         return await res.json();
