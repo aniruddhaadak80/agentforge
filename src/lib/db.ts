@@ -48,19 +48,46 @@ export interface Transaction {
 
 let db: Database.Database | null = null;
 
-function getDb(): Database.Database {
-    if (!db) {
-        const dbPath = path.join(process.cwd(), "data", "agentforge.db");
-        // Ensure data directory exists
-        const fs = require("fs");
-        const dir = path.dirname(dbPath);
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
+export function getDb() {
+    if (db) return db;
+
+    // Check if we are in a Vercel environment
+    const isVercel = process.env.VERCEL === "1";
+
+    try {
+        // In Vercel, we must use :memory: or /tmp, but :memory: is safer for stateless functions
+        // For local dev, we use the file
+        let dbPath = ":memory:";
+
+        if (!isVercel) {
+            const dbFile = path.join(process.cwd(), "agentforge.db");
+            // Use standard file path for local dev
+            dbPath = dbFile;
         }
+
         db = new Database(dbPath);
-        db.pragma("journal_mode = WAL");
+
+        // Enable WAL mode for better concurrency (only for file-based DBs)
+        if (!isVercel) {
+            db.pragma("journal_mode = WAL");
+        }
+
         initializeDb(db);
+
+        // Always seed in-memory DBs (Vercel) or if file DB is empty
+        const agentCount = db.prepare("SELECT COUNT(*) as count FROM agents").get() as { count: number };
+        if (isVercel || agentCount.count === 0) {
+            console.log(isVercel ? "⚡ Vercel support: Seeding in-memory DB..." : "🌱 Seeding fresh database...");
+            seedDatabase(db);
+        }
+    } catch (error) {
+        console.error("Database initialization failed:", error);
+        console.warn("⚠️ Falling back to in-memory database due to error");
+        db = new Database(":memory:");
+        initializeDb(db);
+        seedDatabase(db);
     }
+
     return db;
 }
 
